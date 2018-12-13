@@ -1,35 +1,24 @@
-var express    = require('express');
-var randopeep = require("randopeep");
-var expressjwt = require("express-jwt");
-var cors = require("cors");
-var app = express();
+const express = require("express");
+const randopeep = require("randopeep");
+const expressjwt = require("express-jwt");
+const cors = require("cors");
+const auth0Config = require("./config");
+const app = express();
 
-const useAuth0 = false;
+const NAME = "Joel Lord";
 
-let jwtCheckOptions = {};
+let jwtCheckOptions = auth0Config;
 
-if (useAuth0) {
-  jwtCheckOptions = {
-    secret: 't2ABNgm7aB8YrMrnsutSB0bPNtLZbC7P',
-    audience: 'secure-spa-auth0',
-    issuer: "https://joel-1.auth0.com/"
-  };
-} else {
-  jwtCheckOptions = {
-    secret: "mysupersecret"
-  };
-}
-
-var jwtCheck = expressjwt(jwtCheckOptions);
+const jwtCheck = expressjwt(jwtCheckOptions);
 
 app.use(cors());
 
-app.get("/headline", function(req, res) {
+app.get("/headline", (req, res) => {
   res.status(200).send(randopeep.clickbait.headline());
 });
 
-app.get("/protected/headline", jwtCheck, function(req, res) {
-  res.status(200).send(randopeep.clickbait.headline("Joel Lord"));
+app.get("/protected/headline", jwtCheck, (req, res) => {
+  res.status(200).send(randopeep.clickbait.headline(NAME));
 });
 
 app.get('*', function (req, res) {
@@ -37,5 +26,3 @@ app.get('*', function (req, res) {
 });
 
 app.listen(8888, () => console.log("API started on port 8888"));
-
-// module.exports = Webtask.fromExpress(app);
