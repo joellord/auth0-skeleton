@@ -3,6 +3,8 @@ A very simple application that uses Auth0 to access protected routes on an API.
 
 # Setup
 
+Start by adding your Auth0 configurations in `/front/config.js` and `/api/config.js`.
+
 ## Front end 
 The front-end is in the `/front` folder.  You can start it with `server` or any other static http server.
 
